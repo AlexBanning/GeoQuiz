@@ -131,6 +131,14 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(boolean userPressedTrue) {
+
+        if (mQuestionBank[mCurrentIndex].isAnswered()) {
+            // Could notify that already answered with toast
+            return;
+        }
+
+        mQuestionBank[mCurrentIndex].setAnswered(true);
+
         boolean answerIsTrue =  mQuestionBank[mCurrentIndex].isAnswerTrue();
 
         int messageResId = 0;
