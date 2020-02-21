@@ -22,6 +22,8 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mPrevButton;
     private ImageButton mNextButton;
     private TextView mQuestionTextView;
+    private int mCorrect = 0;
+    private int mIncorrect = 0;
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia, true),
@@ -138,19 +140,20 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         mQuestionBank[mCurrentIndex].setAnswered(true);
-
         boolean answerIsTrue =  mQuestionBank[mCurrentIndex].isAnswerTrue();
-
         int messageResId = 0;
 
         if (userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct_toast;
+            mCorrect++;
         } else {
+            mIncorrect++;
             messageResId = R.string.incorrect_toast;
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
                 .show();
+        checkPercent();
     }
 
     private void moveNext() {
@@ -165,5 +168,14 @@ public class QuizActivity extends AppCompatActivity {
             mCurrentIndex--;
         }
         updateQuestion();
+    }
+
+    private void checkPercent() {
+        if (mQuestionBank.length == mCorrect + mIncorrect) {
+            int percent_correct = (100 * mCorrect) / mQuestionBank.length;
+            String percentMsg = "%" + percent_correct;
+            Toast.makeText(this, this.getString(R.string.score_toast, percentMsg),
+                    Toast.LENGTH_LONG).show();
+        }
     }
 }
